@@ -1,0 +1,2 @@
+PORT = '/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A10M6AG4-if00-port0'
+BAUDRATE = 115200
