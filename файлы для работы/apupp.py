@@ -583,7 +583,7 @@ class Apupp:  # noqa: WPS214
     """Модуль для работы с АПУ-ЦВМ12Р через программный протокол APUPP."""
 
     def __init__(self):
-        """Конструктор класса. Открывает соединение по COM-порту с АПУ."""
+        """Конструктор класса. Открывает COM-порт (без установки соединения по APUPP)."""
         self._connection = serial.Serial(
             port=PORT,
             baudrate=BAUDRATE,
@@ -592,10 +592,15 @@ class Apupp:  # noqa: WPS214
             stopbits=serial.STOPBITS_TWO,
             timeout=10,
         )
-        self.connect()
 
-    def __del__(self):  # noqa: WPS603
-        """Деструктор класса."""
+    def __enter__(self) -> 'Apupp':
+        """Вход в контекстный менеджер. Устанавливает соединение по APUPP."""
+        self.connect()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """Выход из контекстного менеджера. Разрывает соединение и закрывает COM-порт."""
+        self.disconnect()
         self._connection.close()
 
     """ # noqa: WPS428, WPS462
