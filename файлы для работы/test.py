@@ -24,7 +24,7 @@ def run() -> None:
             time.sleep(PAUSE_SECONDS)
 
             read_back = apu.rd_kpu(svk=Svk.VK1).get_list_value()
-            status = 'OK' if read_back == value else 'MISMATCH'
+            status = 'OK' if read_back == [0, 0, 0, 0] + value else 'MISMATCH'
             print(f'Считано КПУ ВК1: {read_back} [{status}]')
 
 if __name__ == '__main__':
